@@ -15,8 +15,18 @@ export default function index() {
   const [isEdit, setEdit] = useState(false);
   const [record, setRecord] = useState();
   const [description, setDescription] = useState();
+  const [editedRecord, setEditedRecord] = useState({
+    descriptions: "aaa",
+    genre: "aa",
+    title: "aaaa",
+    views: "3441",
+  });
 
   useEffect(() => {
+    loadBooks();
+  }, []);
+
+  const loadBooks = () => {
     setLoading(true);
     fetch("https://andywiranata-42555.firebaseio.com/test-frontend/items.json")
       .then((res) => res.json())
@@ -24,14 +34,27 @@ export default function index() {
         setBooks(data);
         setLoading(false);
       });
-  }, []);
-
-  const editBook = (index) => {
-    setEdit(true);
-    setRecord(index);
   };
 
-  const saveBook = (index) => {
+  const editBook = (index, book) => {
+    setEdit(true);
+    setRecord(index);
+    setEditedRecord(book);
+  };
+
+  const saveBook = async (index) => {
+    const response = await fetch(
+      `https://andywiranata-42555.firebaseio.com/test-frontend/items/${index}.json`,
+      {
+        method: "PUT",
+        body: JSON.stringify(editedRecord),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = response.json();
+    loadBooks();
     setEdit(false);
     setRecord(index);
   };
@@ -39,6 +62,10 @@ export default function index() {
   const viewDescription = (bookDescription) => {
     setDescription(bookDescription);
     setOpen(true);
+  };
+
+  const handleEditRecord = (e) => {
+    setEditedRecord({ ...editedRecord, [e.target.id]: e.target.value });
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -104,54 +131,104 @@ export default function index() {
                     {index + 1}
                   </td>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                    {book.title}
+                    {!isEdit || (isEdit && record !== index) ? (
+                      <span>{book.title}</span>
+                    ) : (
+                      <input
+                        type="text"
+                        name="title"
+                        id="title"
+                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        placeholder="Input title"
+                        value={editedRecord.title}
+                        onChange={(e) => handleEditRecord(e)}
+                      />
+                    )}
                   </td>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                    {book.views}
+                    {!isEdit || (isEdit && record !== index) ? (
+                      <span>{book.views}</span>
+                    ) : (
+                      <input
+                        type="number"
+                        name="views"
+                        id="views"
+                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        placeholder="Input views"
+                        min="0"
+                        value={editedRecord.views}
+                        onChange={(e) => handleEditRecord(e)}
+                      />
+                    )}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-500">
-                    {book.genre}
+                    {!isEdit || (isEdit && record !== index) ? (
+                      <span>{book.genre}</span>
+                    ) : (
+                      <input
+                        type="text"
+                        name="genre"
+                        id="genre"
+                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        placeholder="Input genre"
+                        value={editedRecord.genre}
+                        onChange={(e) => handleEditRecord(e)}
+                      />
+                    )}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-500 flex space-x-2 items-center">
-                    <span className="max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
-                      {book.descriptions}{" "}
-                    </span>
-                    <a
-                      href="#"
-                      className="text-gray-400 hover:text-gray-600"
-                      onClick={() => viewDescription(book.descriptions)}
-                    >
-                      <InformationCircleIcon
-                        className="h-4 w-4"
-                        aria-hidden="true"
+                    {!isEdit || (isEdit && record !== index) ? (
+                      <Fragment>
+                        <span className="max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
+                          {book.descriptions}{" "}
+                        </span>
+                        <a
+                          href="#"
+                          className="text-gray-400 hover:text-gray-600"
+                          onClick={() => viewDescription(book.descriptions)}
+                        >
+                          <InformationCircleIcon
+                            className="h-4 w-4"
+                            aria-hidden="true"
+                          />
+                          <span className="sr-only">, {book.id}</span>
+                        </a>
+                      </Fragment>
+                    ) : (
+                      <input
+                        type="text"
+                        name="descriptions"
+                        id="descriptions"
+                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        placeholder="Input descriptions"
+                        value={editedRecord.descriptions}
+                        onChange={(e) => handleEditRecord(e)}
                       />
-                      <span className="sr-only">, {book.id}</span>
-                    </a>
+                    )}
                   </td>
                   <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <a
-                      href="#"
-                      className="text-indigo-600 hover:text-indigo-900"
-                      onClick={() => editBook(index)}
-                    >
-                      {record !== index && (
+                    {!isEdit || (isEdit && record !== index) ? (
+                      <a
+                        href="#"
+                        className="text-indigo-600 hover:text-indigo-900"
+                        onClick={() => editBook(index, book)}
+                      >
                         <PencilAltIcon className="h-4 w-4" aria-hidden="true" />
-                      )}
-                      <span className="sr-only">, {index}</span>
-                    </a>
-                    <a
-                      href="#"
-                      className="text-indigo-600 hover:text-indigo-900"
-                      onClick={() => saveBook(index)}
-                    >
-                      {isEdit && record === index && (
+                        <span className="sr-only">, {index}</span>
+                      </a>
+                    ) : (
+                      <a
+                        href="#"
+                        className="text-indigo-600 hover:text-indigo-900"
+                        onClick={() => saveBook(index)}
+                      >
                         <CheckIcon
                           className="h-4 w-4 text-green-600"
                           aria-hidden="true"
                         />
-                      )}
-                      <span className="sr-only">, {index}</span>
-                    </a>
+                        <span className="sr-only">, {index}</span>
+                      </a>
+                    )}
                   </td>
                 </tr>
               ))}
