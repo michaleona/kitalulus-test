@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import Head from "next/head";
+import "../asset/css/globals.css";
 
 function App({ Component, pageProps }) {
   return (

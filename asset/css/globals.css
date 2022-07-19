@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Maven Pro", sans-serif;
+}
+
+*:focus {
+  outline: 0 !important;
+}
