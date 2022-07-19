@@ -131,15 +131,7 @@ export default function index() {
                     placeholder="Search title"
                   />
                 </td>
-                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                  <input
-                    type="text"
-                    name="views-search"
-                    id="views-search"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    placeholder="Search views"
-                  />
-                </td>
+                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
                 <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
                   <input
                     type="text"
@@ -149,15 +141,7 @@ export default function index() {
                     placeholder="Search genre"
                   />
                 </td>
-                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                  <input
-                    type="text"
-                    name="description-search"
-                    id="description-search"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    placeholder="Search description"
-                  />
-                </td>
+                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
               </tr>
               {books.map((book, index) => (
                 <tr key={book.index}>
