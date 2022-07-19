@@ -15,12 +15,7 @@ export default function index() {
   const [isEdit, setEdit] = useState(false);
   const [record, setRecord] = useState();
   const [description, setDescription] = useState();
-  const [editedRecord, setEditedRecord] = useState({
-    descriptions: "aaa",
-    genre: "aa",
-    title: "aaaa",
-    views: "3441",
-  });
+  const [editedRecord, setEditedRecord] = useState();
 
   useEffect(() => {
     loadBooks();
@@ -125,6 +120,45 @@ export default function index() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
+              <tr>
+                <td></td>
+                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                  <input
+                    type="text"
+                    name="title-search"
+                    id="title-search"
+                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    placeholder="Search title"
+                  />
+                </td>
+                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                  <input
+                    type="text"
+                    name="views-search"
+                    id="views-search"
+                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    placeholder="Search views"
+                  />
+                </td>
+                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                  <input
+                    type="text"
+                    name="genre-search"
+                    id="genre-search"
+                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    placeholder="Search genre"
+                  />
+                </td>
+                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                  <input
+                    type="text"
+                    name="description-search"
+                    id="description-search"
+                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                    placeholder="Search description"
+                  />
+                </td>
+              </tr>
               {books.map((book, index) => (
                 <tr key={book.index}>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
