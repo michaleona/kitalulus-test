@@ -128,7 +128,7 @@ export default function index() {
 
   return (
     <Fragment>
-      <div className="px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div
           aria-live="assertive"
           className="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start"
