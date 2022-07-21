@@ -215,13 +215,13 @@ export default function index() {
                 </th>
                 <th
                   scope="col"
-                  className="hidden px-3 py-3.5 text-left text-sm lg:table-cell"
+                  className="px-3 py-3.5 text-left text-sm lg:table-cell"
                 >
                   Title
                 </th>
                 <th
                   scope="col"
-                  className="hidden px-3 py-3.5 text-right text-sm sm:table-cell"
+                  className="px-3 py-3.5 text-right text-sm sm:table-cell"
                 >
                   Views
                 </th>
