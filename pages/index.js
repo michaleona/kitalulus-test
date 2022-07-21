@@ -111,6 +111,7 @@ export default function index() {
 
   const filterBooks = () => {
     setShowFilter(!isShowFilter);
+    setEdit(false);
     setTitleSearch();
     setGenreSearch();
   };
@@ -213,12 +214,6 @@ export default function index() {
                 </th>
                 <th
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-right text-sm sm:pl-6"
-                >
-                  Id
-                </th>
-                <th
-                  scope="col"
                   className="px-3 py-3.5 text-left text-sm lg:table-cell"
                 >
                   Title
@@ -288,9 +283,6 @@ export default function index() {
                   <tr key={book.index} className="font-semibold">
                     <td className="px-3 py-4 text-sm text-right text-gray-300 lg:table-cell">
                       {index + 1}
-                    </td>
-                    <td className="px-3 py-4 text-sm text-right text-gray-300 lg:table-cell">
-                      {book.id}
                     </td>
                     <td className="px-3 py-4 text-sm text-gray-300 lg:table-cell">
                       {!isEdit || (isEdit && record !== index) ? (
