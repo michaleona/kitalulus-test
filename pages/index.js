@@ -5,9 +5,10 @@ import {
   InformationCircleIcon,
   CheckIcon,
   XCircleIcon,
+  XIcon,
+  CheckCircleIcon,
 } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationIcon, XIcon } from "@heroicons/react/outline";
 
 export default function index() {
   const [books, setBooks] = useState(null);
@@ -21,10 +22,18 @@ export default function index() {
   const [titleSearch, setTitleSearch] = useState();
   const [genreSearch, setGenreSearch] = useState();
   const [bookTemporary, setBookTemporary] = useState();
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     loadBooks();
   }, []);
+
+  useEffect(() => {
+    show &&
+      setInterval(() => {
+        setShow(false);
+      }, 3000);
+  }, [show]);
 
   useEffect(() => {
     if (bookTemporary && (titleSearch || genreSearch)) {
@@ -82,6 +91,9 @@ export default function index() {
       }
     );
     const data = response.json();
+    setShow(true);
+    setTitleSearch();
+    setGenreSearch();
     loadBooks();
     setEdit(false);
     setRecord(index);
@@ -98,10 +110,11 @@ export default function index() {
 
   const filterBooks = () => {
     setShowFilter(!isShowFilter);
+    setTitleSearch();
+    setGenreSearch();
   };
 
   useEffect(() => {
-    console.log(isShowFilter);
     if (isShowFilter) {
       setBookTemporary(books);
     } else {
@@ -116,6 +129,54 @@ export default function index() {
   return (
     <Fragment>
       <div className="px-4 sm:px-6 lg:px-8 py-16">
+        <div
+          aria-live="assertive"
+          className="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start"
+        >
+          <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
+            {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
+            <Transition
+              show={show}
+              as={Fragment}
+              enter="transform ease-out duration-300 transition"
+              enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+              enterTo="translate-y-0 opacity-100 sm:translate-x-0"
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+                <div className="p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <CheckCircleIcon
+                        className="h-6 w-6 text-green-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3 w-0 flex-1 pt-0.5">
+                      <p className="text-sm font-medium text-gray-900">
+                        Successfully saved!
+                      </p>
+                    </div>
+                    <div className="ml-4 flex-shrink-0 flex">
+                      <button
+                        type="button"
+                        className="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        onClick={() => {
+                          setShow(false);
+                        }}
+                      >
+                        <span className="sr-only">Close</span>
+                        <XIcon className="h-5 w-5" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Transition>
+          </div>
+        </div>
         <div className="sm:flex sm:items-center">
           <div className="mt-4 sm:mt-0 sm:flex-none">
             <button
@@ -191,7 +252,7 @@ export default function index() {
                       type="text"
                       name="title-search"
                       id="title-search"
-                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                      className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
                       placeholder="Search title"
                       value={titleSearch}
                       onChange={(e) => setTitleSearch(e.target.value)}
@@ -203,7 +264,7 @@ export default function index() {
                       type="text"
                       name="genre-search"
                       id="genre-search"
-                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                      className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
                       placeholder="Search genre"
                       value={genreSearch}
                       onChange={(e) => setGenreSearch(e.target.value)}
@@ -225,7 +286,7 @@ export default function index() {
                         type="text"
                         name="title"
                         id="title"
-                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
                         placeholder="Input title"
                         value={editedRecord.title}
                         onChange={(e) => handleEditRecord(e)}
@@ -240,7 +301,7 @@ export default function index() {
                         type="number"
                         name="views"
                         id="views"
-                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
                         placeholder="Input views"
                         min="0"
                         value={editedRecord.views}
@@ -256,7 +317,7 @@ export default function index() {
                         type="text"
                         name="genre"
                         id="genre"
-                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
                         placeholder="Input genre"
                         value={editedRecord.genre}
                         onChange={(e) => handleEditRecord(e)}
@@ -282,11 +343,11 @@ export default function index() {
                         </a>
                       </Fragment>
                     ) : (
-                      <input
+                      <textarea
                         type="text"
                         name="descriptions"
                         id="descriptions"
-                        className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
                         placeholder="Input descriptions"
                         value={editedRecord.descriptions}
                         onChange={(e) => handleEditRecord(e)}
