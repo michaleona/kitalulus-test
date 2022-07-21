@@ -123,9 +123,6 @@ export default function index() {
     }
   }, [isShowFilter]);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (!books) return <p>No books data</p>;
-
   return (
     <Fragment>
       <div className="px-4 sm:px-6 lg:px-8 py-16">
@@ -267,111 +264,128 @@ export default function index() {
                   <td className="px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
                 </tr>
               )}
-              {books.map((book, index) => (
-                <tr key={book.index} className="font-semibold">
-                  <td className="px-3 py-4 text-sm text-right text-gray-300 lg:table-cell">
-                    {index + 1}
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="text-gray-300 text-center p-8">
+                    Loading ...
                   </td>
-                  <td className="px-3 py-4 text-sm text-gray-300 lg:table-cell">
-                    {!isEdit || (isEdit && record !== index) ? (
-                      <span>{book.title}</span>
-                    ) : (
-                      <input
-                        type="text"
-                        name="title"
-                        id="title"
-                        className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
-                        placeholder="Input title"
-                        value={editedRecord.title}
-                        onChange={(e) => handleEditRecord(e)}
-                      />
-                    )}
+                </tr>
+              ) : !books ? (
+                <tr>
+                  <td colSpan={6} className="text-gray-300 text-center p-8">
+                    No books available
                   </td>
-                  <td className="px-3 py-4 text-sm text-right text-gray-300 sm:table-cell">
-                    {!isEdit || (isEdit && record !== index) ? (
-                      <span>{book.views.toLocaleString("en-US")}</span>
-                    ) : (
-                      <input
-                        type="number"
-                        name="views"
-                        id="views"
-                        className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
-                        placeholder="Input views"
-                        min="0"
-                        value={editedRecord.views}
-                        onChange={(e) => handleEditRecord(e)}
-                      />
-                    )}
-                  </td>
-                  <td className="px-3 py-4 text-sm text-gray-300">
-                    {!isEdit || (isEdit && record !== index) ? (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs tracking-wide bg-purple-100 text-purple-600">
-                        {book.genre}
-                      </span>
-                    ) : (
-                      <input
-                        type="text"
-                        name="genre"
-                        id="genre"
-                        className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
-                        placeholder="Input genre"
-                        value={editedRecord.genre}
-                        onChange={(e) => handleEditRecord(e)}
-                      />
-                    )}
-                  </td>
-                  <td className="px-3 py-4 text-sm text-gray-300 flex space-x-2 items-center">
-                    {!isEdit || (isEdit && record !== index) ? (
-                      <Fragment>
-                        <span className="max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
-                          {book.descriptions}{" "}
+                </tr>
+              ) : (
+                books.map((book, index) => (
+                  <tr key={book.index} className="font-semibold">
+                    <td className="px-3 py-4 text-sm text-right text-gray-300 lg:table-cell">
+                      {index + 1}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-300 lg:table-cell">
+                      {!isEdit || (isEdit && record !== index) ? (
+                        <span>{book.title}</span>
+                      ) : (
+                        <input
+                          type="text"
+                          name="title"
+                          id="title"
+                          className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
+                          placeholder="Input title"
+                          value={editedRecord.title}
+                          onChange={(e) => handleEditRecord(e)}
+                        />
+                      )}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-right text-gray-300 sm:table-cell">
+                      {!isEdit || (isEdit && record !== index) ? (
+                        <span>{book.views.toLocaleString("en-US")}</span>
+                      ) : (
+                        <input
+                          type="number"
+                          name="views"
+                          id="views"
+                          className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
+                          placeholder="Input views"
+                          min="0"
+                          value={editedRecord.views}
+                          onChange={(e) => handleEditRecord(e)}
+                        />
+                      )}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-300">
+                      {!isEdit || (isEdit && record !== index) ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs tracking-wide bg-purple-100 text-purple-600">
+                          {book.genre}
                         </span>
+                      ) : (
+                        <input
+                          type="text"
+                          name="genre"
+                          id="genre"
+                          className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
+                          placeholder="Input genre"
+                          value={editedRecord.genre}
+                          onChange={(e) => handleEditRecord(e)}
+                        />
+                      )}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-gray-300 flex space-x-2 items-center">
+                      {!isEdit || (isEdit && record !== index) ? (
+                        <Fragment>
+                          <span className="max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
+                            {book.descriptions}{" "}
+                          </span>
+                          <a
+                            href="#"
+                            className="text-gray-500 hover:text-gray-700"
+                            onClick={() => viewDescription(book.descriptions)}
+                          >
+                            <InformationCircleIcon
+                              className="h-4 w-4"
+                              aria-hidden="true"
+                            />
+                            <span className="sr-only">, {book.id}</span>
+                          </a>
+                        </Fragment>
+                      ) : (
+                        <textarea
+                          type="text"
+                          name="descriptions"
+                          id="descriptions"
+                          className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
+                          placeholder="Input descriptions"
+                          value={editedRecord.descriptions}
+                          onChange={(e) => handleEditRecord(e)}
+                        />
+                      )}
+                    </td>
+                    <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                      {!isEdit || (isEdit && record !== index) ? (
                         <a
                           href="#"
-                          className="text-gray-500 hover:text-gray-700"
-                          onClick={() => viewDescription(book.descriptions)}
+                          className="text-gray-400 hover:text-gray-500"
+                          onClick={() => editBook(index, book)}
                         >
-                          <InformationCircleIcon
+                          <PencilAltIcon
                             className="h-4 w-4"
                             aria-hidden="true"
                           />
-                          <span className="sr-only">, {book.id}</span>
+                          <span className="sr-only">, {index}</span>
                         </a>
-                      </Fragment>
-                    ) : (
-                      <textarea
-                        type="text"
-                        name="descriptions"
-                        id="descriptions"
-                        className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
-                        placeholder="Input descriptions"
-                        value={editedRecord.descriptions}
-                        onChange={(e) => handleEditRecord(e)}
-                      />
-                    )}
-                  </td>
-                  <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    {!isEdit || (isEdit && record !== index) ? (
-                      <a
-                        href="#"
-                        className="text-gray-400 hover:text-gray-500"
-                        onClick={() => editBook(index, book)}
-                      >
-                        <PencilAltIcon className="h-4 w-4" aria-hidden="true" />
-                        <span className="sr-only">, {index}</span>
-                      </a>
-                    ) : (
-                      <a href="#" onClick={() => saveBook(index)}>
-                        <CheckIcon
-                          className="h-4 w-4 text-green-600"
-                          aria-hidden="true"
-                        />
-                        <span className="sr-only">, {index}</span>
-                      </a>
-                    )}
-                  </td>
-                </tr>
-              ))}
+                      ) : (
+                        <a href="#" onClick={() => saveBook(index)}>
+                          <CheckIcon
+                            className="h-4 w-4 text-green-600"
+                            aria-hidden="true"
+                          />
+                          <span className="sr-only">, {index}</span>
+                        </a>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
