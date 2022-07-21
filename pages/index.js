@@ -9,6 +9,7 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
+import NumberFormat from "react-number-format";
 
 export default function index() {
   const [books, setBooks] = useState(null);
@@ -208,23 +209,23 @@ export default function index() {
               <tr className="text-gray-500">
                 <th
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-right text-sm sm:pl-6"
+                  className="py-3.5 pl-4 pr-3 text-right text-sm sm:pl-6 w-12"
                 >
                   No
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-left text-sm lg:table-cell"
+                  className="px-3 py-3.5 text-left text-sm lg:table-cell w-64"
                 >
                   Title
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-right text-sm sm:table-cell"
+                  className="px-3 py-3.5 text-right text-sm sm:table-cell w-32"
                 >
                   Views
                 </th>
-                <th scope="col" className="px-3 py-3.5 text-left text-sm">
+                <th scope="col" className="px-3 py-3.5 text-left text-sm w-64">
                   Genre
                 </th>
                 <th scope="col" className="px-3 py-3.5 text-left text-sm">
@@ -301,7 +302,13 @@ export default function index() {
                     </td>
                     <td className="px-3 py-4 text-sm text-right text-gray-300 sm:table-cell">
                       {!isEdit || (isEdit && record !== index) ? (
-                        <span>{book.views.toLocaleString("en-US")}</span>
+                        <span>
+                          <NumberFormat
+                            value={book.views}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                          />
+                        </span>
                       ) : (
                         <input
                           type="number"
