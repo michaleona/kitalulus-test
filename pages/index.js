@@ -2,10 +2,10 @@ import { useState, useEffect, Fragment } from "react";
 import {
   FilterIcon,
   PencilAltIcon,
-  InformationCircleIcon,
   CheckIcon,
   XCircleIcon,
   XIcon,
+  InformationCircleIcon,
   CheckCircleIcon,
 } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
@@ -134,7 +134,6 @@ export default function index() {
           className="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start"
         >
           <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
-            {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
             <Transition
               show={show}
               as={Fragment}
@@ -181,7 +180,7 @@ export default function index() {
           <div className="mt-4 sm:mt-0 sm:flex-none">
             <button
               type="button"
-              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              className="inline-flex items-center px-4 py-2 shadow-lg border-gray-300 text-sm rounded-full  bg-[#0F2027] text-gray-300 font-bold tracking-wide"
               onClick={() => filterBooks()}
             >
               {isShowFilter ? (
@@ -204,38 +203,32 @@ export default function index() {
             </button>
           </div>
         </div>
-        <div className="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
-          <table className="min-w-full divide-y divide-gray-300">
-            <thead className="bg-gray-50">
-              <tr>
+        <div className="-mx-4 mt-8 overflow-hidden shadow-lg border-none sm:-mx-6 md:mx-0 md:rounded-lg">
+          <table className="min-w-full divide-y divide-gray-700">
+            <thead className="bg-[#0F2027]">
+              <tr className="text-gray-500">
                 <th
                   scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                  className="py-3.5 pl-4 pr-3 text-right text-sm sm:pl-6"
                 >
                   No
                 </th>
                 <th
                   scope="col"
-                  className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
+                  className="hidden px-3 py-3.5 text-left text-sm lg:table-cell"
                 >
                   Title
                 </th>
                 <th
                   scope="col"
-                  className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                  className="hidden px-3 py-3.5 text-right text-sm sm:table-cell"
                 >
                   Views
                 </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
+                <th scope="col" className="px-3 py-3.5 text-left text-sm">
                   Genre
                 </th>
-                <th
-                  scope="col"
-                  className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
+                <th scope="col" className="px-3 py-3.5 text-left text-sm">
                   Description
                 </th>
                 <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
@@ -243,42 +236,43 @@ export default function index() {
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
+            <tbody className="divide-y divide-gray-700 bg-[#0F2027]">
               {isShowFilter && (
                 <tr>
                   <td></td>
-                  <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                  <td className="px-3 py-4 text-sm text-gray-300 lg:table-cell">
                     <input
                       type="text"
                       name="title-search"
                       id="title-search"
-                      className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
+                      className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
                       placeholder="Search title"
                       value={titleSearch}
                       onChange={(e) => setTitleSearch(e.target.value)}
                     />
                   </td>
-                  <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
-                  <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                  <td className="px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
+                  <td className="px-3 py-4 text-sm text-gray-300 lg:table-cell">
                     <input
                       type="text"
                       name="genre-search"
                       id="genre-search"
-                      className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
+                      className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
                       placeholder="Search genre"
                       value={genreSearch}
                       onChange={(e) => setGenreSearch(e.target.value)}
                     />
                   </td>
-                  <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
+                  <td className="px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
+                  <td className="px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
                 </tr>
               )}
               {books.map((book, index) => (
-                <tr key={book.index}>
-                  <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                <tr key={book.index} className="font-semibold">
+                  <td className="px-3 py-4 text-sm text-right text-gray-300 lg:table-cell">
                     {index + 1}
                   </td>
-                  <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                  <td className="px-3 py-4 text-sm text-gray-300 lg:table-cell">
                     {!isEdit || (isEdit && record !== index) ? (
                       <span>{book.title}</span>
                     ) : (
@@ -286,22 +280,22 @@ export default function index() {
                         type="text"
                         name="title"
                         id="title"
-                        className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
+                        className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
                         placeholder="Input title"
                         value={editedRecord.title}
                         onChange={(e) => handleEditRecord(e)}
                       />
                     )}
                   </td>
-                  <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                  <td className="px-3 py-4 text-sm text-right text-gray-300 sm:table-cell">
                     {!isEdit || (isEdit && record !== index) ? (
-                      <span>{book.views}</span>
+                      <span>{book.views.toLocaleString("en-US")}</span>
                     ) : (
                       <input
                         type="number"
                         name="views"
                         id="views"
-                        className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
+                        className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
                         placeholder="Input views"
                         min="0"
                         value={editedRecord.views}
@@ -309,22 +303,24 @@ export default function index() {
                       />
                     )}
                   </td>
-                  <td className="px-3 py-4 text-sm text-gray-500">
+                  <td className="px-3 py-4 text-sm text-gray-300">
                     {!isEdit || (isEdit && record !== index) ? (
-                      <span>{book.genre}</span>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs tracking-wide bg-purple-100 text-purple-600">
+                        {book.genre}
+                      </span>
                     ) : (
                       <input
                         type="text"
                         name="genre"
                         id="genre"
-                        className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
+                        className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
                         placeholder="Input genre"
                         value={editedRecord.genre}
                         onChange={(e) => handleEditRecord(e)}
                       />
                     )}
                   </td>
-                  <td className="px-3 py-4 text-sm text-gray-500 flex space-x-2 items-center">
+                  <td className="px-3 py-4 text-sm text-gray-300 flex space-x-2 items-center">
                     {!isEdit || (isEdit && record !== index) ? (
                       <Fragment>
                         <span className="max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
@@ -332,7 +328,7 @@ export default function index() {
                         </span>
                         <a
                           href="#"
-                          className="text-gray-400 hover:text-gray-600"
+                          className="text-gray-500 hover:text-gray-700"
                           onClick={() => viewDescription(book.descriptions)}
                         >
                           <InformationCircleIcon
@@ -347,7 +343,7 @@ export default function index() {
                         type="text"
                         name="descriptions"
                         id="descriptions"
-                        className="block w-full sm:text-sm border-gray-300 border rounded-md p-2"
+                        className="block w-full sm:text-sm border-gray-600 border rounded-md p-2 bg-transparent"
                         placeholder="Input descriptions"
                         value={editedRecord.descriptions}
                         onChange={(e) => handleEditRecord(e)}
@@ -358,18 +354,14 @@ export default function index() {
                     {!isEdit || (isEdit && record !== index) ? (
                       <a
                         href="#"
-                        className="text-indigo-600 hover:text-indigo-900"
+                        className="text-gray-400 hover:text-gray-500"
                         onClick={() => editBook(index, book)}
                       >
                         <PencilAltIcon className="h-4 w-4" aria-hidden="true" />
                         <span className="sr-only">, {index}</span>
                       </a>
                     ) : (
-                      <a
-                        href="#"
-                        className="text-indigo-600 hover:text-indigo-900"
-                        onClick={() => saveBook(index)}
-                      >
+                      <a href="#" onClick={() => saveBook(index)}>
                         <CheckIcon
                           className="h-4 w-4 text-green-600"
                           aria-hidden="true"
@@ -409,18 +401,18 @@ export default function index() {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full sm:p-6">
+                <Dialog.Panel className="relative bg-[#0F2027] rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full sm:p-6">
                   <div className="sm:flex sm:items-start">
                     <div className="mt-3 text-center sm:mt-0 sm:text-left">
                       <div className="mt-2">
-                        <p className="text-sm text-gray-500">{description}</p>
+                        <p className="text-sm text-gray-300">{description}</p>
                       </div>
                     </div>
                   </div>
                   <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                     <button
                       type="button"
-                      className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:text-gray-500 sm:mt-0 sm:w-auto sm:text-sm"
+                      className="mt-3 w-full inline-flex justify-center rounded-full border-2 border-gray-300 shadow-sm px-4 py-2 bg-transparent text-base font-bold text-gray-300 sm:mt-0 sm:w-auto sm:text-sm"
                       onClick={() => setOpen(false)}
                     >
                       Close
