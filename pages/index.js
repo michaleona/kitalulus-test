@@ -4,6 +4,7 @@ import {
   PencilAltIcon,
   InformationCircleIcon,
   CheckIcon,
+  XCircleIcon,
 } from "@heroicons/react/solid";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationIcon, XIcon } from "@heroicons/react/outline";
@@ -16,10 +17,42 @@ export default function index() {
   const [record, setRecord] = useState();
   const [description, setDescription] = useState();
   const [editedRecord, setEditedRecord] = useState();
+  const [isShowFilter, setShowFilter] = useState(false);
+  const [titleSearch, setTitleSearch] = useState();
+  const [genreSearch, setGenreSearch] = useState();
+  const [bookTemporary, setBookTemporary] = useState();
 
   useEffect(() => {
     loadBooks();
   }, []);
+
+  useEffect(() => {
+    if (bookTemporary && (titleSearch || genreSearch)) {
+      let regexTitle = new RegExp(titleSearch, "gi");
+      let regexGenre = new RegExp(genreSearch, "gi");
+      let matchBook;
+      if (titleSearch && genreSearch) {
+        const filterByTitle = bookTemporary.filter((book) =>
+          book.title.match(regexTitle)
+        );
+        const filterByGenre = filterByTitle.filter((book) =>
+          book.genre.match(regexGenre)
+        );
+        matchBook = filterByGenre;
+      } else if (titleSearch) {
+        matchBook = bookTemporary.filter((book) =>
+          book.title.match(regexTitle)
+        );
+      } else if (genreSearch) {
+        matchBook = bookTemporary.filter((book) =>
+          book.genre.match(regexGenre)
+        );
+      }
+      setBooks(matchBook);
+    } else {
+      setBooks(bookTemporary);
+    }
+  }, [titleSearch, genreSearch]);
 
   const loadBooks = () => {
     setLoading(true);
@@ -63,8 +96,22 @@ export default function index() {
     setEditedRecord({ ...editedRecord, [e.target.id]: e.target.value });
   };
 
+  const filterBooks = () => {
+    setShowFilter(!isShowFilter);
+  };
+
+  useEffect(() => {
+    console.log(isShowFilter);
+    if (isShowFilter) {
+      setBookTemporary(books);
+    } else {
+      setBooks(bookTemporary);
+      setBookTemporary(null);
+    }
+  }, [isShowFilter]);
+
   if (isLoading) return <p>Loading...</p>;
-  if (!books) return <p>No profile data</p>;
+  if (!books) return <p>No books data</p>;
 
   return (
     <Fragment>
@@ -73,10 +120,26 @@ export default function index() {
           <div className="mt-4 sm:mt-0 sm:flex-none">
             <button
               type="button"
-              className="inline-flex items-center px-3.5 py-2 border border-transparent text-sm leading-4 font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              onClick={() => filterBooks()}
             >
-              <FilterIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
-              Filter
+              {isShowFilter ? (
+                <Fragment>
+                  <XCircleIcon
+                    className="-ml-0.5 mr-2 h-4 w-4"
+                    aria-hidden="true"
+                  />{" "}
+                  Close
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <FilterIcon
+                    className="-ml-0.5 mr-2 h-4 w-4"
+                    aria-hidden="true"
+                  />
+                  Filter
+                </Fragment>
+              )}
             </button>
           </div>
         </div>
@@ -120,29 +183,35 @@ export default function index() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              <tr>
-                <td></td>
-                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                  <input
-                    type="text"
-                    name="title-search"
-                    id="title-search"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    placeholder="Search title"
-                  />
-                </td>
-                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
-                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                  <input
-                    type="text"
-                    name="genre-search"
-                    id="genre-search"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                    placeholder="Search genre"
-                  />
-                </td>
-                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
-              </tr>
+              {isShowFilter && (
+                <tr>
+                  <td></td>
+                  <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                    <input
+                      type="text"
+                      name="title-search"
+                      id="title-search"
+                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                      placeholder="Search title"
+                      value={titleSearch}
+                      onChange={(e) => setTitleSearch(e.target.value)}
+                    />
+                  </td>
+                  <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
+                  <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                    <input
+                      type="text"
+                      name="genre-search"
+                      id="genre-search"
+                      className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                      placeholder="Search genre"
+                      value={genreSearch}
+                      onChange={(e) => setGenreSearch(e.target.value)}
+                    />
+                  </td>
+                  <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
+                </tr>
+              )}
               {books.map((book, index) => (
                 <tr key={book.index}>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
