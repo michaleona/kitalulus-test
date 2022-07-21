@@ -92,6 +92,7 @@ export default function index() {
     );
     const data = response.json();
     setShow(true);
+    setShowFilter(false);
     setTitleSearch();
     setGenreSearch();
     loadBooks();
