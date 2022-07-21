@@ -68,7 +68,8 @@ export default function index() {
     fetch("https://andywiranata-42555.firebaseio.com/test-frontend/items.json")
       .then((res) => res.json())
       .then((data) => {
-        setBooks(data);
+        const booksWithId = data.map((book, index) => ({ ...book, id: index }));
+        setBooks(booksWithId);
         setLoading(false);
       });
   };
@@ -79,9 +80,9 @@ export default function index() {
     setEditedRecord(book);
   };
 
-  const saveBook = async (index) => {
+  const saveBook = async (id) => {
     const response = await fetch(
-      `https://andywiranata-42555.firebaseio.com/test-frontend/items/${index}.json`,
+      `https://andywiranata-42555.firebaseio.com/test-frontend/items/${id}.json`,
       {
         method: "PUT",
         body: JSON.stringify(editedRecord),
@@ -97,7 +98,6 @@ export default function index() {
     setGenreSearch();
     loadBooks();
     setEdit(false);
-    setRecord(index);
   };
 
   const viewDescription = (bookDescription) => {
@@ -213,6 +213,12 @@ export default function index() {
                 </th>
                 <th
                   scope="col"
+                  className="py-3.5 pl-4 pr-3 text-right text-sm sm:pl-6"
+                >
+                  Id
+                </th>
+                <th
+                  scope="col"
                   className="px-3 py-3.5 text-left text-sm lg:table-cell"
                 >
                   Title
@@ -282,6 +288,9 @@ export default function index() {
                   <tr key={book.index} className="font-semibold">
                     <td className="px-3 py-4 text-sm text-right text-gray-300 lg:table-cell">
                       {index + 1}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-right text-gray-300 lg:table-cell">
+                      {book.id}
                     </td>
                     <td className="px-3 py-4 text-sm text-gray-300 lg:table-cell">
                       {!isEdit || (isEdit && record !== index) ? (
@@ -375,7 +384,7 @@ export default function index() {
                           <span className="sr-only">, {index}</span>
                         </a>
                       ) : (
-                        <a href="#" onClick={() => saveBook(index)}>
+                        <a href="#" onClick={() => saveBook(book.id)}>
                           <CheckIcon
                             className="h-4 w-4 text-green-600"
                             aria-hidden="true"
