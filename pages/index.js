@@ -221,11 +221,14 @@ export default function index() {
                 </th>
                 <th
                   scope="col"
-                  className="px-3 py-3.5 text-right text-sm sm:table-cell w-32"
+                  className="hidden px-3 py-3.5 text-right text-sm sm:table-cell w-32"
                 >
                   Views
                 </th>
-                <th scope="col" className="px-3 py-3.5 text-left text-sm w-64">
+                <th
+                  scope="col"
+                  className="hidden px-3 py-3.5 text-left sm:table-cell text-sm w-64"
+                >
                   Genre
                 </th>
                 <th scope="col" className="px-3 py-3.5 text-left text-sm">
@@ -240,7 +243,7 @@ export default function index() {
               {isShowFilter && (
                 <tr>
                   <td></td>
-                  <td className="px-3 py-4 text-sm text-gray-300 lg:table-cell">
+                  <td className=" px-3 py-4 text-sm text-gray-300">
                     <input
                       type="text"
                       name="title-search"
@@ -251,8 +254,8 @@ export default function index() {
                       onChange={(e) => setTitleSearch(e.target.value)}
                     />
                   </td>
-                  <td className="px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
-                  <td className="px-3 py-4 text-sm text-gray-300 lg:table-cell">
+                  <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell"></td>
+                  <td className="hidden px-3 py-4 text-sm text-gray-300 sm:table-cell">
                     <input
                       type="text"
                       name="genre-search"
@@ -263,7 +266,7 @@ export default function index() {
                       onChange={(e) => setGenreSearch(e.target.value)}
                     />
                   </td>
-                  <td className="px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
+                  <td className="px-3 py-4 text-sm text-gray-500"></td>
                   <td className="px-3 py-4 text-sm text-gray-500 lg:table-cell"></td>
                 </tr>
               )}
@@ -300,7 +303,7 @@ export default function index() {
                         />
                       )}
                     </td>
-                    <td className="px-3 py-4 text-sm text-right text-gray-300 sm:table-cell">
+                    <td className="hidden px-3 py-4 text-sm text-right text-gray-300 sm:table-cell">
                       {!isEdit || (isEdit && record !== index) ? (
                         <span>
                           <NumberFormat
@@ -322,7 +325,7 @@ export default function index() {
                         />
                       )}
                     </td>
-                    <td className="px-3 py-4 text-sm text-gray-300">
+                    <td className="hidden px-3 py-4 text-sm text-gray-300 sm:table-cell">
                       {!isEdit || (isEdit && record !== index) ? (
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs tracking-wide bg-purple-100 text-purple-600">
                           {book.genre}
@@ -339,7 +342,7 @@ export default function index() {
                         />
                       )}
                     </td>
-                    <td className="px-3 py-4 text-sm text-gray-300 flex space-x-2 items-center">
+                    <td className="px-3 py-4 text-sm text-gray-300 flex space-x-2 items-center w-24 sm:w-80">
                       {!isEdit || (isEdit && record !== index) ? (
                         <Fragment>
                           <span className="max-w-xs whitespace-nowrap overflow-hidden text-ellipsis">
